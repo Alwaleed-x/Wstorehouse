@@ -1,0 +1,8 @@
+from cuml.feature_extraction.text import TfidfVectorizer
+import cupy as cp
+
+vectorizer = TfidfVectorizer()
+X_transformed = vectorizer.fit_transform(X)
+
+X_transformed_cp = cp.sparse.csr_matrix(X_transformed)
+print(X_transformed_cp.shape)

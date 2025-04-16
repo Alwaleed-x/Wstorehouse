@@ -1,0 +1,47 @@
+import cupy as cp
+import time
+from cuml.naive_bayes import MultinomialNB
+from cuml.linear_model import LogisticRegression
+from cuml.ensemble import RandomForestClassifier
+from cuml.metrics import accuracy_score
+
+gpu_before_free, gpu_before_total = cp.cuda.runtime.memGetInfo()
+
+start_time = time.time()
+nb_model = MultinomialNB()
+nb_model.fit(X_transformed_svd, y_small)
+nb_pred = nb_model.predict(X_transformed_svd)
+nb_accuracy = accuracy_score(y_small, nb_pred)
+end_time = time.time()
+
+gpu_after_free, gpu_after_total = cp.cuda.runtime.memGetInfo()
+gpu_memory_used = gpu_after_total - gpu_before_total
+
+print(f"Naive Bayes Training Time: {end_time - start_time} seconds")
+print(f"Naive Bayes Memory Used: {gpu_memory_used} bytes")
+
+start_time = time.time()
+lr_model = LogisticRegression()
+lr_model.fit(X_transformed_svd, y_small)
+lr_pred = lr_model.predict(X_transformed_svd)
+lr_accuracy = accuracy_score(y_small, lr_pred)
+end_time = time.time()
+
+gpu_after_free, gpu_after_total = cp.cuda.runtime.memGetInfo()
+gpu_memory_used = gpu_after_total - gpu_before_total
+
+print(f"Logistic Regression Training Time: {end_time - start_time} seconds")
+print(f"Logistic Regression Memory Used: {gpu_memory_used} bytes")
+
+start_time = time.time()
+rf_model = RandomForestClassifier()
+rf_model.fit(X_transformed_svd, y_small)
+rf_pred = rf_model.predict(X_transformed_svd)
+rf_accuracy = accuracy_score(y_small, rf_pred)
+end_time = time.time()
+
+gpu_after_free, gpu_after_total = cp.cuda.runtime.memGetInfo()
+gpu_memory_used = gpu_after_total - gpu_before_total
+
+print(f"Random Forest Training Time: {end_time - start_time} seconds")
+print(f"Random Forest Memory Used: {gpu_memory_used} bytes")
